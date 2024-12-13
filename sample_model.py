@@ -120,7 +120,7 @@ if __name__ == '__main__':
     sample = input("Would you like to sample a model from the full dataset or the small dataset? (full/small) ")
     if sample == "full":
         path_to_model = "Trained_models/full_data.pth"
-        label_count = 81
+        label_count = 90
     else:
         path_to_model = "Trained_models/small_data.pth"
         label_count = 10

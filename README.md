@@ -1,5 +1,7 @@
 # Equation-AI
 
+view the colab notebook at: https://colab.research.google.com/drive/1_ZSqKAsMqcfPFW2L8jlRJpkxpVcnKEIS#scrollTo=TDStTDYEr98J
+
 ## To train the model (this will take a long time)
 
 pip install -r requirements.txt
