@@ -1,10 +1,10 @@
-
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
 from torchvision.utils import make_grid
 from PIL import Image
-checkpoint_path = "/content/crsip-firefly-8.pth"
+from PixelCNN import PixelCNN
+
 def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=None, save_dir=None):
     """
     Generates samples using a pretrained PixelCNN model.
