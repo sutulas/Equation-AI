@@ -1,6 +1,8 @@
 # Equation-AI
 
-view the colab notebook at: https://colab.research.google.com/drive/1_ZSqKAsMqcfPFW2L8jlRJpkxpVcnKEIS#scrollTo=TDStTDYEr98J
+## View the colab notebook at: https://colab.research.google.com/drive/1_ZSqKAsMqcfPFW2L8jlRJpkxpVcnKEIS#scrollTo=TDStTDYEr98J
+
+## View samples in the samples folder
 
 ## To train the model (this will take a long time)
 
