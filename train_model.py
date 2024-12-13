@@ -5,12 +5,14 @@ import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
 import numpy as np
 import torchvision
-from google.colab import files
-import wandb
+try:
+    from google.colab import files
+    IN_COLAB = True
+except ImportError:
+    IN_COLAB = False
 import argparse
 import os
 from tqdm import tqdm
-import wandb
 from PixelCNN import PixelCNN
 
 
@@ -66,9 +68,6 @@ def train(cfg, model, device, train_loader, optimizer, scheduler, epoch):
     # avg_train_loss /= len(test_loader.dataset) * height * width * 3
     print(f"Epoch {epoch + 1}, Average Train loss: {avg_train_loss}")
 
-    # Log the loss
-    wandb.log({"Train Loss": avg_train_loss, "Epoch": epoch + 1})
-
     scheduler.step()
 
 
@@ -92,9 +91,7 @@ def test_and_sample(cfg, model, device, test_loader, height, width, losses, para
             test_loss += F.cross_entropy(outputs, targets, reduction='sum').item()
 
     test_loss /= len(test_loader.dataset) * height * width * 3  # Normalize by total number of pixels
-    wandb.log({
-        "Test loss": test_loss
-    })
+    
     print(f"Epoch {epoch + 1}, Test loss: {test_loss}")
     losses.append(test_loss)
     params.append(model.state_dict())
@@ -132,8 +129,6 @@ def main():
         "cuda": True
     }
 
-    wandb.init(project="WidePixelCNN")
-    wandb.config.update(cfg)
     # Load data
     train_loader, test_loader, HEIGHT, WIDTH, num_labels = global_train_loader, global_test_loader, global_HEIGHT, global_WIDTH, global_num_labels
     print(f'num labels: {num_labels}')
@@ -144,9 +139,6 @@ def main():
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-5)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
-
-
-    wandb.watch(model)
 
     losses = []
     params = []
@@ -163,7 +155,8 @@ def main():
 
         print(f"Model saved to {SAVED_MODEL_PATH}")
 
-    files.download(SAVED_MODEL_PATH)
+    if IN_COLAB:
+        files.download(SAVED_MODEL_PATH)
 
     # Save the best model
 

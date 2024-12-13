@@ -4,6 +4,7 @@ import numpy as np
 from torchvision.utils import make_grid
 from PIL import Image
 from PixelCNN import PixelCNN
+import os
 
 def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=None, save_dir=None):
     """
@@ -67,7 +68,7 @@ def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=Non
     return samples
 
 
-def main():
+def main(checkpoint_path):
     # Configuration dictionary (ensure it matches the one used during training)
     cfg = {
         "epochs": 50,
@@ -86,7 +87,7 @@ def main():
         "cuda": True,
         "image_height": 28,
         "image_width": 168,
-        "num_labels": global_num_labels,  # Ensure this matches your dataset
+        "num_labels": 10,  # Ensure this matches your dataset
     }
 
     device = torch.device("cuda" if torch.cuda.is_available() and cfg["cuda"] else "cpu")
@@ -115,4 +116,5 @@ def main():
     plt.show()
 
 if __name__ == '__main__':
-    main()
+    path_to_model = "Trained_models/small_data.pth"
+    main(path_to_model)
