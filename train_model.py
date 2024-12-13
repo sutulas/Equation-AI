@@ -14,6 +14,7 @@ import argparse
 import os
 from tqdm import tqdm
 from PixelCNN import PixelCNN
+from get_data import global_train_loader, global_test_loader, global_HEIGHT, global_WIDTH, global_num_labels
 
 
 TRAIN_DATASET_ROOT = '.data/train/'

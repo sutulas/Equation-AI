@@ -23,7 +23,7 @@ def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=Non
     """
     # Load the model architecture
     num_labels = cfg.get('num_labels', 10)  # Default to 10 if not specified
-    model = PixelCNN(cfg=cfg, num_labels=10)
+    model = PixelCNN(cfg=cfg, num_labels=num_labels)
     model.to(device)
 
     # Load the pretrained model weights
@@ -40,6 +40,7 @@ def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=Non
 
         model.eval()  # Set model to evaluation mode
         print("Model loaded successfully.")
+        print("Generating samples, hang tight this may take a few minutes...")
     else:
         raise FileNotFoundError(f"No checkpoint found at '{checkpoint_path}'.")
 
@@ -68,7 +69,7 @@ def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=Non
     return samples
 
 
-def main(checkpoint_path):
+def main(checkpoint_path, label_count):
     # Configuration dictionary (ensure it matches the one used during training)
     cfg = {
         "epochs": 50,
@@ -87,7 +88,7 @@ def main(checkpoint_path):
         "cuda": True,
         "image_height": 28,
         "image_width": 168,
-        "num_labels": 10,  # Ensure this matches your dataset
+        "num_labels": label_count,  # Ensure this matches your dataset
     }
 
     device = torch.device("cuda" if torch.cuda.is_available() and cfg["cuda"] else "cpu")
@@ -95,13 +96,13 @@ def main(checkpoint_path):
     # Path to your saved model checkpoint
 
     # Number of samples to generate
-    num_samples = 25
+    num_samples = 3
 
     # (Optional) Label to condition on. Replace with a valid label index or set to None.
-    label = 8
+    label = None
 
     # Directory to save generated images
-    save_dir = '/content/generated_samples'
+    save_dir = './generated_samples'
 
     # Generate samples
     samples = generate_samples(cfg, checkpoint_path, num_samples, device=device, label=label, save_dir=save_dir)
@@ -116,5 +117,13 @@ def main(checkpoint_path):
     plt.show()
 
 if __name__ == '__main__':
-    path_to_model = "Trained_models/small_data.pth"
-    main(path_to_model)
+    sample = input("Would you like to sample a model from the full dataset or the small dataset? (full/small) ")
+    if sample == "full":
+        path_to_model = "Trained_models/full_data.pth"
+        label_count = 81
+    else:
+        path_to_model = "Trained_models/small_data.pth"
+        label_count = 10
+    main(path_to_model, label_count)
+    print("Samples successfully saved to ./generated_samples")
+
