@@ -19,3 +19,12 @@ python train_model.py
 pip install -r requirements.txt
 
 python sample_model.py
+
+## Contribution
+
+get_data.py: Bo Zhang, Cristobal Benavides
+
+PixelCNN.py: Bo Zhang, Seamus Sutula
+
+train_model.py/sample_model.py: Cristobal Benavides, Seamus Sutula
+
