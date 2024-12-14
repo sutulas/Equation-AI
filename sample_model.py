@@ -69,7 +69,7 @@ def generate_samples(cfg, checkpoint_path, num_samples, device='cuda', label=Non
     return samples
 
 
-def main(checkpoint_path, label_count):
+def main(checkpoint_path, label_count, out_path):
     # Configuration dictionary (ensure it matches the one used during training)
     cfg = {
         "epochs": 50,
@@ -102,7 +102,7 @@ def main(checkpoint_path, label_count):
     label = None
 
     # Directory to save generated images
-    save_dir = './generated_samples'
+    save_dir = out_path
 
     # Generate samples
     samples = generate_samples(cfg, checkpoint_path, num_samples, device=device, label=label, save_dir=save_dir)
@@ -119,11 +119,13 @@ def main(checkpoint_path, label_count):
 if __name__ == '__main__':
     sample = input("Would you like to sample a model from the full dataset or the small dataset? (full/small) ")
     if sample == "full":
-        path_to_model = "Trained_models/full_data.pth"
+        path_to_model = "./Trained_models/full_data.pth"
+        out_path = "./generated_samples/full_data/"
         label_count = 90
     else:
-        path_to_model = "Trained_models/small_data.pth"
+        path_to_model = "./Trained_models/small_data.pth"
         label_count = 10
-    main(path_to_model, label_count)
+        out_path = "./generated_samples/small_data/"
+    main(path_to_model, label_count, out_path)
     print("Samples successfully saved to ./generated_samples")
 
